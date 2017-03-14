@@ -17,7 +17,11 @@ function createEvent(e, b) {
                 b.append($("<strong>Where: </strong>")).append(e.location)
         }
 
-        p.append($("<p></p>").append($("<strong>When: </strong>")).append(e.start.dateStr + " - " + e.end.dateStr))
+        dateRange = e.start.dateStr
+        if (e.start.date != e.end.date) {
+            dateRange += " - " + e.end.dateStr
+        }
+        p.append($("<p></p>").append($("<strong>When: </strong>")).append(dateRange))
         if (e.description) {
             d = $('<p style="white-space:pre-wrap"></p>').append($("<strong>Description: </strong>")).append(urlify(e.description))
         }
