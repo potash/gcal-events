@@ -24,9 +24,9 @@ function createEvent(e, b) {
         p.append(d)
         b.append(p)
 
-        if ($(d[0]).height() > 3) {
+        /*if ($(d[0]).height() > 3) {
             b.append($("<p></p>").append("...<a href=''>Show More</a>"))
-        }
+        }*/
         b.append($("<hr></hr>"))
 }
 
