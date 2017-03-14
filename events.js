@@ -30,10 +30,10 @@ function createEvent(e, b) {
         b.append($("<hr></hr>"))
 }
 
-function parseDate(date) {
+function parseDate(date, end) {
     if (date.dateTime) {
         date.date = moment(date.dateTime)
-        date.dateStr = date.date.format("dddd, MMMM Do YYYY, h:mm a")
+        date.dateStr = date.date.format(end ? "h:mm a" : "dddd, MMMM Do YYYY, h:mm a")
     } else {
         date.date = moment(date.date)
         date.dateStr = date.date.format("dddd, MMMM Do YYYY")
@@ -41,8 +41,8 @@ function parseDate(date) {
 }
 
 function parseDates(e) {
-    parseDate(e.start)
-    parseDate(e.end)
+    parseDate(e.start, false)
+    parseDate(e.end, true)
     return e
 }
 
