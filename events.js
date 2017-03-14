@@ -16,8 +16,8 @@ function createEvent(e, b) {
         if (e.location) {
                 b.append($("<strong>Where: </strong>")).append(e.location)
         }
-        // TODO: use e.start.date for full day events
-        p.append($("<p></p>").append($("<strong>When: </strong>")).append(e.start + " - " + e.end))
+
+        p.append($("<p></p>").append($("<strong>When: </strong>")).append(e.start.dateStr + " - " + e.end.dateStr))
         if (e.description) {
             d = $('<p style="white-space:pre-wrap"></p>').append($("<strong>Description: </strong>")).append(urlify(e.description))
         }
@@ -30,14 +30,24 @@ function createEvent(e, b) {
         b.append($("<hr></hr>"))
 }
 
-function replaceDates(e) {
-        e.start = e.start.dateTime ? e.start.dateTime : e.start.date
-        e.end = e.end.dateTime ? e.end.dateTime : e.end.date
-        return e
+function parseDate(date) {
+    if (date.dateTime) {
+        date.date = moment(date.dateTime)
+        date.dateStr = date.date.format("dddd, MMMM Do YYYY, h:mm a")
+    } else {
+        date.date = moment(date.date)
+        date.dateStr = date.date.format("dddd, MMMM Do YYYY")
+    }
+}
+
+function parseDates(e) {
+    parseDate(e.start)
+    parseDate(e.end)
+    return e
 }
 
 function compareDates(a, b) {
-        return a.start > b.start
+        return a.start.date > b.start.date
 }
 
 $(document).ready(function() {
@@ -46,7 +56,7 @@ $(document).ready(function() {
         var date = new Date()
         $.getJSON('https://www.googleapis.com/calendar/v3/calendars/' + calendarId  + '/events?key=' + key + '&timeMin=' + date.toISOString(), 
                 function(data) {
-                        events = data.items.map(replaceDates).sort(compareDates)
+                        events = data.items.map(parseDates).sort(compareDates)
                         for (i = 0; i < events.length; i++) {
                                 createEvent(events[i], $('#events'))
                         }
