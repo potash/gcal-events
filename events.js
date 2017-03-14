@@ -47,7 +47,7 @@ function parseDates(e) {
 }
 
 function compareDates(a, b) {
-        return a.start.date > b.start.date
+        return a.start.date - b.start.date
 }
 
 $(document).ready(function() {
